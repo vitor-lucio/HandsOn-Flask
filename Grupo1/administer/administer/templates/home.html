@@ -118,7 +118,7 @@
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="" method="POST">
+            <form action="{{url_for('usuarios.login')}}" method="POST">
                 <div class="modal-body mx-3">
                     
                     {{ form_login.hidden_tag() }}

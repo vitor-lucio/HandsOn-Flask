@@ -7,17 +7,22 @@ from flask_login import LoginManager, current_user
 from datetime import datetime
 
 login_manager = LoginManager()
+
 app = Flask(__name__)
+
 app.config['SECRET_KEY'] = 'mysecretkey'
 
-####### CONFIG DB ######
+############################################################
+################## BANCO DE DADOS ##########################
+############################################################
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
-Migrate(app, db)
+Migrate(app,db)
+
 
 #############################################################
 ################## CONFIGURA LOGIN ##########################
@@ -40,12 +45,26 @@ def login_required(role=["ANY"]):
         return decorated_view
     return wrapper
 
-###### Cadastro BluePrints #######
+
+############################################################
+################## BLUEPRINTS ##############################
+############################################################
 
 from administer.principal.views import principal
 from administer.usuarios.views import usuarios
+from administer.funcionarios.views import funcionarios
+from administer.error_pages.handlers import error_pages
 
 app.register_blueprint(principal)
-app.register_blueprint(usuarios, url_prefix="/usuarios")
+app.register_blueprint(usuarios,url_prefix='/usuarios')
+app.register_blueprint(funcionarios,url_prefix='/funcionarios')
+app.register_blueprint(error_pages)
 
+####################################
+############FUNÇÕES#################
+####################################
+	
 
+@app.template_filter('converte')
+def converte(data):
+    return data.strftime("%Y-%m-%d")
