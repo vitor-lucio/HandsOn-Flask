@@ -10,6 +10,8 @@ class Funcionario(db.Model):
     email = db.Column(db.String(120), nullable=False)
     setor = db.Column(db.String(120), nullable=False)
 
+    admin_id = db.Column(db.Integer, db.ForeignKey('administradores.id'))
+
     def __init__(self, form):
 
         self.nome = form.nome.data
