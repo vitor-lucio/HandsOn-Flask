@@ -12,8 +12,41 @@ from administer.funcionarios.forms import funcionario_form
 usuarios = Blueprint('usuarios', __name__,template_folder='templates/usuarios')
 
 #ADICIONAR
+@usuarios.route("/cadastro", methods=["POST", "GET"])
+def adicionar():
+	form_add = AdicionarUserForm(prefix='form_add')
+
+	if form_add.validate_on_submit() and not Admin.query.filter_by(username=form_add.username.data).first() and not Admin.query.filter_by(email=form_add.email.data).first():
+		nome = form_add.nome.data
+		username = form_add.username.data
+		email = form_add.email.data
+		data_nascimento = form_add.data_nascimento.data
+		
+		bcrypt = Bcrypt()
+		hhash = bcrypt.generate_password_hash(form_add.senha.data)
+
+		avatar = adicionar_avatar(form_add.foto.data, username)
+
+		novo_user = Admin(nome, email, username, data_nascimento, hhash, avatar)
+
+		db.session.add(novo_user)
+		db.session.commit()
+
+		flash("Agradecemos o seu cadastro", "success")
+
+		return redirect(url_for("principal.index"))
+
+	if Admin.query.filter_by(username=form_add.username.data).first(): 
+		flash("Esse nome de usuário já existe.", "warning")
+
+	if Admin.query.filter_by(email=form_add.email.data).first(): 
+		flash("Esse e-mail já está em uso.", "warning")
+
+	return redirect(url_for("principal.index"))
+	
 
 #LOGIN
+
 
 #LOGOUT
 
