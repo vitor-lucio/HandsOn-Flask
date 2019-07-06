@@ -9,3 +9,7 @@ from administer.funcionarios.models import Funcionario
 from administer.funcionarios.forms import funcionario_form
 
 usuarios = Blueprint('usuarios', __name__, template_folder="template")
+
+@usuarios.route("/alo")
+def alo():
+    return "alo"

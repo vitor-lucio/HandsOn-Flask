@@ -24,4 +24,7 @@ Migrate(app, db)
 ######### Cadastro BluePrints ############
 from administer.principal.views import principal
 app.register_blueprint(principal)
+from administer.usuarios.views import usuarios
+app.register_blueprint(usuarios, url_prefix="/usuarios")
+#app.register_blueprint(funcionarios, url_prefix="/funcionarios")
 
