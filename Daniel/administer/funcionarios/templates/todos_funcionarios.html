@@ -1,0 +1,41 @@
+{% extends "base.html"%}
+
+{%block title%} {{titulo}} {% endblock %}
+
+{% block content %}
+
+  {% for employer in funcionarios.items %}
+
+    <!--Cards-->
+
+    <!--Cards-->
+
+  {% endfor %}
+
+{% endblock %}
+
+
+{%  block pagination %}
+<br/>
+  <div style="size: 100%;" class="text-center">
+    <div class="ui pagination menu">
+      {% for page_num in funcionarios.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+          {% if funcionarios.page == page_num and page_num %}
+            <a class="disabled item">
+              {{ page_num }}
+            </a>
+          {% elif page_num %}
+            <a class="active item" href="{{ url_for('funcionarios.exibe_all', page=page_num) }}">
+              {{ page_num }}
+            </a>
+          {% else %}
+            <div class="disabled item">
+              ...
+            </div>
+          {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+<br/>
+  
+{% endblock %}
