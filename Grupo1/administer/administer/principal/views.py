@@ -7,4 +7,4 @@ principal = Blueprint('principal', __name__)
 @principal.route('/')
 def indef():
 	
-	return "Hello World"
+	return render_template('home.html')
