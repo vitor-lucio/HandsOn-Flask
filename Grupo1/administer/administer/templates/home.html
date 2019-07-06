@@ -52,6 +52,9 @@
             <h2>Administer - Management of Employers</h2>
             <h5>Blah blah blah</h5>
             <br>
+            <div class="text-center">
+                <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm">Login</a>
+              </div>
           </div>
         </div>
       </div>
@@ -67,9 +70,28 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-
+        <h2>Não é cadastrado, cadastre-se agora!</h2>
         <form class="border border-light p-5" method="POST" enctype="multipart/form-data">
-          {{}}
+          {{form_add.hidden_tag()}}
+          <p class="h4 mb-4 text-center">Preencha os dados a seguir</p>
+          {{form_add.nome(class="form-control mb-4", placeholder="Seu Nome")}}
+          {{form_add.email(class="form-control mb-4", placeholder="Seu email")}}
+          {{form_add.username(class="form-control mb-4", placeholder="Seu Username")}}
+          {{form_add.data_nascimento(class="form-control mb-4", placeholder="Data de Nascimento", type="date")}}
+
+          <div class="input-group mb-4">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+            </div>
+            <div class="custom-file">
+              {{form_add.foto(type="file", class="custom-file-input", id="inputGroupFile01")}}
+              <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+            </div>
+          </div>
+
+          {{form_add.senha(class="form-control mb-4", placeholder="Sua Senha")}}
+          {{form_add.conf_senha(class="form-control mb-4", placeholder="Confirme sua senha")}}
+          {{form_add.submit(class="btn btn-info my-4", placeholder="Seu Nome") }}
         </form>
 
       </div>
@@ -78,6 +100,48 @@
 
 </main>
 <!--Main Layout-->
+
+<div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Sign in</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <form action="" method="POST">
+        </div>
+        <div class="modal-body mx-3">
+          <div class="md-form mb-5">
+            <i class="fas fa-envelope prefix grey-text"></i>
+              {{ form_login.email(type="email", id="defaultForm-email", class="form-control validate") }}
+            <label data-error="wrong" data-success="right" for="defaultForm-email">Your email</label>
+          </div>
+
+          <div class="md-form mb-4">
+            <i class="fas fa-lock prefix grey-text"></i>
+            {{ form_login.senha(type="password", id="defaultForm-pass", class="form-control validate") }}
+            <label data-error="wrong" data-success="right" for="defaultForm-pass">Your password</label>
+          </div>
+          <!-- Default unchecked -->
+          <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="defaultUnchecked">
+              <label class="custom-control-label" for="defaultUnchecked">Lembrar-me</label>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          {{form_login.submit(class="btn btn-default")}}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="text-center">
+  <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm">Launch
+    Modal Login Form</a>
+</div>
 
     <script type="text/javascript" src="{{url_for('static',filename='js/jquery-3.3.1.min.js')}}"></script>
     <!-- Bootstrap tooltips -->
