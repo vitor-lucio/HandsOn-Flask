@@ -11,7 +11,20 @@ from administer.funcionarios.forms import funcionario_form
 
 usuarios = Blueprint('usuarios', __name__,template_folder='templates/usuarios')
 
-#ADICIONAR
+@usuarios.route("/dashboard", methods=["POST", "GET"])
+@login_required()
+def dashboard():
+	totalSetor =[]
+	add_funcionario = funcionario_form()
+
+	funcionarios = Funcionario.query.filter_by(admin_id=current_user.id)
+	for func in funcionarios:
+		totalSetor.append(func.setor)
+	
+	tabela = [totalSetor.count('0'),totalSetor.count('1'),totalSetor.count('2'),totalSetor.count('3'),totalSetor.count('4'),totalSetor.count('5'),totalSetor.count('6')]
+
+	return render_template("dashboard.html", add_funcionario=add_funcionario, tabela=tabela)
+
 @usuarios.route('/cadastro', methods=['POST', 'GET'])
 def adicionar():
 
@@ -46,23 +59,35 @@ def adicionar():
 
 	return redirect(url_for('principal.index'))
 
-#LOGIN
+@usuarios.route('/login', methods=['POST', 'GET'])
+def login():
+	form_login = LoginForm(prefix="form_login")
 
-#LOGOUT
+	if form_login.validate_on_submit():
+		user = Admin.query.filter_by(email=form_login.email.data).first()
 
-@usuarios.route("/dashboard", methods=["POST", "GET"])
+		if user is not None:
+			
+			if user.check_password(form_login.senha.data):
+
+				login_user(user, remember=form_login.lembrar.data)
+				flash("Você foi logado com sucesso.", "success")
+			
+				return redirect(url_for('usuarios.dashboard'))
+
+			else:
+				flash("Email e/ou senha incorretos", "alert")
+		else:
+			flash("Email e/ou senha incorretos", "warning")
+
+	return redirect(url_for('principal.index'))
+
+@usuarios.route('/logout', methods=['POST', 'GET'])
 @login_required()
-def dashboard():
-	totalSetor =[]
-	add_funcionario = funcionario_form()
-
-	funcionarios = Funcionario.query.filter_by(admin_id=current_user.id)
-	for func in funcionarios:
-		totalSetor.append(func.setor)
-	
-	tabela = [totalSetor.count('0'),totalSetor.count('1'),totalSetor.count('2'),totalSetor.count('3'),totalSetor.count('4'),totalSetor.count('5'),totalSetor.count('6')]
-
-	return render_template("dashboard.html", add_funcionario=add_funcionario, tabela=tabela)
+def logout():
+	logout_user()
+	flash("Você foi deslogado com sucesso.", "success")
+	return redirect(url_for('principal.index'))
 
 @login_required()
 @usuarios.route("/perfil", methods=["POST", "GET"])
