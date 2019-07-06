@@ -53,8 +53,10 @@
             <h2>Administer - Babá de funcionários</h2>
             <h5>Halp</h5>
             <br>
-            <p>
-              Alimente-o corretamente. Uma dieta saudável consiste em feno e concentrados de aveia, farelo e cevada. Mantenha toda a comida fora do chão para prevenir mofo e insetos. Se a comida ficar no chão, pode ocasionar doenças. Também permita acesso permanente a água e providencie um bloco de sal para lamber. </p>
+            <p></p>
+            <div class="text-center">
+                <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm">Entrar!</a>
+                </div>
           </div>
         </div>
       </div>
@@ -70,12 +72,28 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
+        <h2>Não é cadastrado? Cadastre-se agora!</h2>
+        <form action="" class="border border-light p-5" method="POST" enctype="multipart/form-data">
+            {{form_add.hidden_tag()}}
+            <p class="h4 mb-4 text center">Preencher dados</p>
+            {{form_add.nome(class="form-control mb-4",placeholder="Nome")}}
+            {{form_add.email(class="form-control mb-4",placeholder="Digite seu e-mail")}}
+            {{form_add.username(class="form-control mb-4",placeholder="Username")}}
+            {{form_add.data_nascimento(class="form-control mb-4",type="date")}}
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+              </div>
+              <div class="custom-file">
+                {{form_add.foto(type="file",class="custom-file-input",id="inputGroupFile01")}}
+                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+              </div>
+            </div>
+            {{form_add.senha(class="form-control mb-4",placeholder="senha")}}
+            {{form_add.conf_senha(class="form-control mb-4",placeholder="confirme a senha")}}
+            {{form_add.submit(class="btn btn-info btn-block mb-4")}}
+        </form>
 
-        <p align="justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-          incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-          ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-          voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-          proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
       </div>
     </div>
@@ -84,7 +102,50 @@
 </main>
 <!--Main Layout-->
     
+<div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header text-center">
+      <h4 class="modal-title w-100 font-weight-bold">Logar</h4>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form action="" method="POST">
+      {{form_login.hidden_tag()}}
+    <div class="modal-body mx-3">
+      <div class="md-form mb-5">
+        <i class="fas fa-envelope prefix grey-text"></i>
+        {{form_login.email(type="email",id="defaultForm-email",class="form-control validate")}}
+        <label data-error="wrong" data-success="right" for="defaultForm-email">Your email</label>
+      </div>
 
+      <div class="md-form mb-4">
+        <i class="fas fa-lock prefix grey-text"></i>
+        {{form_login.senha(type="password",id="defaultForm-pass",class="form-control validate")}}
+        <label data-error="wrong" data-success="right" for="defaultForm-pass">Your password</label>
+      </div>
+      
+      <div class="custom-control custom-checkbox">
+        {{form_login.lembrar(type="checkbox",class="custom-control-input",id="defaultUnchecked")}}
+       <label class="custom-control-label" for="defaultUnchecked">Lembrar-me!</label>
+      </div>
+
+    </div>
+    <div class="modal-footer d-flex justify-content-center">
+      {{form_login.submit(class="btn btn-default")}}
+      
+    </div>
+  </form>
+  </div>
+</div>
+</div>
+
+<div class="text-center">
+<a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm">Launch
+  Modal Login Form</a>
+</div>
     <script type="text/javascript" src="{{url_for('static',filename='js/jquery-3.3.1.min.js')}}"></script>
     <!-- Bootstrap tooltips -->
     <script type="text/javascript" src="{{url_for('static',filename='js/popper.min.js')}}"></script>
