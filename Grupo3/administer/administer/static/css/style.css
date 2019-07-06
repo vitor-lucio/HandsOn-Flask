@@ -2,14 +2,6 @@
     background: url("../img/fundoHome.png")no-repeat center center;
     background-size: cover;
 }
-
-@media (min-width: 768px) {
-    .view {
-        overflow: visible;
-        margin-top: -56px;
-    }
-}
-
 .view {
     margin-top: -56px;
 }
