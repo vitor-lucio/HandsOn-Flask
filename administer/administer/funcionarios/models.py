@@ -11,18 +11,6 @@ class Funcionario(db.Model):
 	email = db.Column(db.String(120), nullable=False)
 	setor = db.Column(db.String(120), nullable=False)
 
-<<<<<<< HEAD
-    admin_id = db.Column(db.Integer, db.ForeignKey('administradores.id'))
-
-    def __init__(self, form):
-
-        self.nome = form.nome.data
-        self.idade = form.idade.data
-        self.email = form.idade.data
-        self.setor = form.idade.data
-    
-    
-=======
 	admin_id = db.Column(db.Integer, db.ForeignKey('administradores.id'))
 	
 	def __init__(self, form):
@@ -30,4 +18,3 @@ class Funcionario(db.Model):
 		self.idade = form.idade.data   # self.idade = idade  
 		self.email = form.email.data   # self.email = email   
 		self.setor = form.setor.data   # self.setor = setor  
->>>>>>> master
