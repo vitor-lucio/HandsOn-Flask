@@ -7,7 +7,103 @@ from administer import login_required, db
 
 funcionarios = Blueprint('funcionarios', __name__, template_folder='templates')
 
+def valida_formulario(data):
 
+	if (len(data["nome"]) <= 3 or len(data["nome"]) >= 120):
+		return False
+
+
+	try:
+
+		len_email1 = len(data["email"].split("@"))
+		len_email2 = len(data["email"].split("@")[-1].split('.'))
+
+		if (len_email1 <= 0 or len_email1 > 2):
+			return False
+		if (len_email2 <= 0):
+			return False
+
+		if (int(data["idade"]) < 14 or int(data["idade"]) >= 180):
+			return False
+
+		if (int(data["setor"]) > 6 or int(data["setor"]) < 0):
+			return False
+
+	except:
+
+		return False
+
+	return True
+
+
+
+@login_required()
+@funcionarios.route("/adicionar", methods=["POST", "GET"])
+def adicionar():
+	
+	add_funcionario = funcionario_form()
+	
+	if add_funcionario.validate_on_submit():
+		print("Errado, to aqui")
+
+		new_employer = Funcionario(add_funcionario)
+
+		new_employer.admin_id = current_user.id
+
+		db.session.add(new_employer)
+		db.session.commit()
+		flash("Adicionado", "danger")
+		
+		return redirect(url_for('funcionarios.exibe_all'))
+
+	
+	flash("Deu Ruim", "danger")
+
+	return redirect(url_for('funcionarios.dashboard'))
+
+
+@login_required()
+@funcionarios.route("/excluir/<int:id>", methods=["POST", "GET"])
+def excluir(id):
+	
+	del_employer = Funcionario.query.get_or_404(id)
+
+	if del_employer.admin.id != current_user.id:
+		abort(403)
+
+	db.session.delete(del_employer)
+	db.session.commit()
+
+	return redirect(url_for('funcionarios.meus_funcionarios'))
+
+@login_required()
+@funcionarios.route("/editar/<int:id>", methods=["POST", "GET"])
+def editar(id):
+	
+	edit_employer = Funcionario.query.get_or_404(id)
+
+	if edit_employer.admin.id != current_user.id:
+
+		res = make_response(jsonify({"message": "Aqui não FDP"}), 403)
+		return res
+
+	data = request.get_json()
+
+	edit_employer.nome = data["nome"]
+	edit_employer.idade = data["idade"]
+	edit_employer.email = data["email"]
+	edit_employer.setor = data["setor"]
+
+	res = make_response(jsonify({"message": "JSON recebido"}), 200)
+
+	if not valida_formulario(data):
+		
+		res = make_response(jsonify({"message": "JSON crashado"}), 500)
+		return res
+
+	db.session.commit()
+
+	return res
 
 @login_required()
 @funcionarios.route("/exibe_all")
