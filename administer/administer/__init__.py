@@ -46,4 +46,6 @@ from administer.principal.views import principal
 from administer.usuarios.views import usuarios
 
 app.register_blueprint(principal)
-app.register_blueprint(usuarios,url_prefix='/usuarios')
+app.register_blueprint(usuarios, url_prefix="/usuarios")
+
+
