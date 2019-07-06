@@ -14,8 +14,6 @@ usuarios = Blueprint('usuarios', __name__,template_folder='templates/usuarios')
 
 
 #ADICIONAR
-@usuarios.route("/cadastro", methods=["POST", "GET"])
-def adicionar():
 
 	form_add = AdicionarUserForm(prefix="form_add")
 
