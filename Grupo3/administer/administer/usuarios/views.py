@@ -44,7 +44,7 @@ def adicionar():
 	if Admin.query.filter_by(email = form_add.email.data).first():
 		flash(f"Email ja cadastrado", "warning")
 
-   return redirect(url_for('principal.index'))
+  return redirect(url_for('principal.index'))
 
 
 #LOGIN
