@@ -15,7 +15,8 @@ usuarios = Blueprint('usuarios', __name__,template_folder='templates/usuarios')
 @usuarios.route("/cadastro", methods=["POST", "GET"]) 
 def adicionar():
     form_add = AdicionarUserForm(prefix="form_add")
-	if form_add.validate_on_submit() and not Admin.query.filter_by(username=form_add.username.data).first() and not 
+
+ if form_add.validate_on_submit() and not Admin.query.filter_by(username=form_add.username.data).first() and not 
 
 	  nome = form_add.nome.data
 	  username = form_add.username.data
@@ -37,13 +38,13 @@ def adicionar():
 	  
 	  return redirect(url_for('principal.index'))
 
-	  if Admin.query.filter_by(username = form_add.username.data).first():
-		  flash(f"Esse nome de usuario ja existe", "warning")
+	if Admin.query.filter_by(username = form_add.username.data).first():
+		flash(f"Esse nome de usuario ja existe", "warning")
 
-	  if Admin.query.filter_by(email = form_add.email.data).first():
-		  flash(f"Email ja cadastrado", "warning")
+	if Admin.query.filter_by(email = form_add.email.data).first():
+		flash(f"Email ja cadastrado", "warning")
 
-	  return redirect(url_for('principal.index'))
+   return redirect(url_for('principal.index'))
 
 
 #LOGIN
