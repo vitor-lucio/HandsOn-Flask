@@ -11,45 +11,6 @@ from administer.funcionarios.forms import funcionario_form
 
 usuarios = Blueprint('usuarios', __name__,template_folder='templates/usuarios')
 
-#ADICIONAR
-@usuarios.route("/cadastro", methods=["POST","GET"])
-def adicionar():
-
-	form_add = AdicionarUserForm(prefix="form_add")
-
-	if form_add.validate_on_submit() and not Admin.query.filter_by(username=form_add.username.data).first() and not Admin.query.filter_by(email=form_add.email.data).first():
-		nome = form_add.nome.data
-		username = form_add.username.data
-		email = form_add.email.data
-		data_nasc = form_add.data_nascimento.data
-
-		bcript = Bcrypt()
-
-		hhash = bcript.generate_password_hash(form_add.senha.data)
-
-		avatar = adicionar_avatar(form_add.foto.data, username)
-
-		novo_user = Admin(nome, email, username, data_nasc, hhash, avatar)
-
-		db.session.add(novo_user)
-		db.session.commit()
-
-		flash("Obrigado por se cadastrar, corno", "sucess")
-			
-		return redirect(url_for('principal.index'))
-
-	if Admin.query.filter_by(username=form_add.username.data).first():
-		flash("O nome de usuário já existe")
-
-	if Admin.query.filter_by(email=form_add.email.data).first():
-		flash("O email já está sendo usado")
-
-	return redirect(url_for('principal.index'))
-
-#LOGIN
-
-#LOGOUT
-
 @usuarios.route("/dashboard", methods=["POST", "GET"])
 @login_required()
 def dashboard():
@@ -63,6 +24,74 @@ def dashboard():
 	tabela = [totalSetor.count('0'),totalSetor.count('1'),totalSetor.count('2'),totalSetor.count('3'),totalSetor.count('4'),totalSetor.count('5'),totalSetor.count('6')]
 
 	return render_template("dashboard.html", add_funcionario=add_funcionario, tabela=tabela)
+
+@usuarios.route('/cadastro', methods=['POST', 'GET'])
+def adicionar():
+
+	form_add = AdicionarUserForm(prefix="form_add")
+
+	if form_add.validate_on_submit() and not Admin.query.filter_by(username=form_add.username.data).first() and not Admin.query.filter_by(email=form_add.email.data).first() :
+
+		nome = form_add.nome.data
+		username = form_add.username.data
+		email = form_add.email.data
+		data_nasc = form_add.data_nascimento.data
+
+		bcript = Bcrypt()
+
+		hhash = bcript.generate_password_hash(form_add.senha.data)
+
+		avatar = adicionar_avatar(form_add.foto.data, username)
+
+		novo_user = Admin(nome, email,username, data_nasc, hhash, avatar)
+
+		db.session.add(novo_user)
+		db.session.commit()
+
+		flash("Agradecemos seu cadastro!", "success")
+
+		return redirect(url_for('principal.index'))
+
+
+	if Admin.query.filter_by(username=form_add.username.data).first():
+		flash(f"Esse nome de usuário já existe.", "warning")
+
+	if Admin.query.filter_by(email=form_add.email.data).first():
+		flash(f"Esse e-mail já está em uso.", "warning")
+
+	return redirect(url_for('principal.index'))
+	
+
+
+@usuarios.route('/login', methods=['POST', 'GET'])
+def login():
+	form_login = LoginForm(prefix="form_login")
+
+	if form_login.validate_on_submit():
+		user = Admin.query.filter_by(email=form_login.email.data).first()
+
+		if user is not None:
+			
+			if user.check_password(form_login.senha.data):
+
+				login_user(user, remember=form_login.lembrar.data)
+				flash("Você foi logado com sucesso.", "success")
+			
+				return redirect(url_for('usuarios.dashboard'))
+
+			else:
+				flash("Email e/ou senha incorretos", "alert")
+		else:
+			flash("Email e/ou senha incorretos", "warning")
+
+	return redirect(url_for('principal.index'))
+
+@usuarios.route('/logout', methods=['POST', 'GET'])
+@login_required()
+def logout():
+	logout_user()
+	flash("Você foi deslogado com sucesso.", "success")
+	return redirect(url_for('principal.index'))
 
 @login_required()
 @usuarios.route("/perfil", methods=["POST", "GET"])
@@ -86,3 +115,4 @@ def perfil():
 		flash("Dados atualizados!","success")
 
 	return render_template("perfil.html", add_funcionario=add_funcionario, editar_user=editar_user)
+
