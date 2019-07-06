@@ -4,4 +4,4 @@ principal = Blueprint('principal',__name__)
 
 @principal.route('/')
 def index():
-    return 'Olá mundo'
+    return render_template('home.html')
