@@ -28,7 +28,7 @@ def _deactivate(args):
 _deactivate(["nondestructive"])
 aliases["deactivate"] = _deactivate
 
-$VIRTUAL_ENV = r"/home/galoma/My-Github/HandsOn-Flask/administer/venv"
+$VIRTUAL_ENV = r"/home/daniel/Projetos/iJunior/Aprendizado/FLASK/HANDS ON - 06-07-19/HandsOn-Flask/Daniel/venv"
 
 $_OLD_VIRTUAL_PATH = $PATH
 $PATH = $PATH[:]

@@ -10,7 +10,7 @@ alias deactivate 'test $?_OLD_VIRTUAL_PATH != 0 && setenv PATH "$_OLD_VIRTUAL_PA
 # Unset irrelevant variables.
 deactivate nondestructive
 
-setenv VIRTUAL_ENV "/home/galoma/My-Github/HandsOn-Flask/administer/venv"
+setenv VIRTUAL_ENV "/home/daniel/Projetos/iJunior/Aprendizado/FLASK/HANDS ON - 06-07-19/HandsOn-Flask/Daniel/venv"
 
 set _OLD_VIRTUAL_PATH="$PATH:q"
 setenv PATH "$VIRTUAL_ENV:q/bin:$PATH:q"
