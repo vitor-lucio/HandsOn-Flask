@@ -64,7 +64,45 @@
 
 <script type="text/javascript">
     
+    function atualiza(){
+        
+        let nome = $("#nome_edit").val();
+        let email = $("#email_edit").val();
+        let idade = $("#idade_edit").val();
+        let setor = $("#setor_edit").val();
 
+        var update = {
+            nome: nome,
+            email: email,
+            idade: idade,
+            setor: setor
+        };
+
+        console.log(update)
+
+        fetch(window.origin + '/funcionarios/editar/{{funcionario.id}}', {
+            
+            method: "POST",
+            credentials: "include", //Pega as informações em coock e coloca na requisição
+            body: JSON.stringify(update),
+            cache: "no-cache",
+            headers: new Headers({
+                "content-type": "application/json"
+            })
+
+        }).then(function (response){
+
+            if(response.status !== 200){
+                console.log("Response status foi boicotado: " + response.status);
+                return ;
+            }
+
+            response.json().then(function (data){
+                console.log(data)
+            })
+        })
+
+    }
 
 </script>
 
