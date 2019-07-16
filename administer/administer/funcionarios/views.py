@@ -142,3 +142,16 @@ def exibe(id):
 	funcionario = Funcionario.query.get_or_404(id)
 
 	return render_template("funcionario.html", add_funcionario=add_funcionario, funcionario=funcionario)
+
+@login_required()
+@funcionarios.route("/busca/<string:nome>", methods=["GET"])
+@funcionarios.route("/busca", methods=["GET"], defaults={"nome":None})
+def busca(nome):
+	if nome == None:
+
+		redirect(url_for('funcionarios.meus_funcionarios'))
+
+	add_funcionario = funcionario_form()
+	#funcionario = Funcionario.query.get_or_404(id)
+	#, funcionario=funcionario
+	return render_template("busca_funcionarios.html", add_funcionario=add_funcionario)
